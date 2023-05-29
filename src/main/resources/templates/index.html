@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<!--
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+-->
+<html xmlns:th="https://www.thymeleaf.org">
+<head lang="en">
+    <meta charset="UTF-8"/>
+    <title>Home</title>
+</head>
+<body>
+    <h1 style="text-align:center;">Online Order System</h1>
+    
+    <h2 style="text-align:left;">GET API's</h2>
+    
+    <p  style="text-align:left;" id="Allcustomerurl"><a href="http://localhost:8080/api/AllCustomers">http://localhost:8080/api/AllCustomers</a></p>
+    <p  style="text-align:left;" id="Allemployeeurl"><a href="http://localhost:8080/api/AllEmployees">http://localhost:8080/api/AllEmployees</a></p>
+    <p  style="text-align:left;" id="Allofficeurl"><a href="http://localhost:8080/api/AllOffices">http://localhost:8080/api/AllOffices</a></p>
+    <p  style="text-align:left;" id="Allorderurl"><a href="http://localhost:8080/api/AllOrders">http://localhost:8080/api/AllOrders</a></p>
+    <p  style="text-align:left;" id="Allorderproductdetailurl"><a href="http://localhost:8080/api/AllOrderProductDetail">http://localhost:8080/api/AllOrderProductDetail</a></p>
+    <p  style="text-align:left;" id="Allproducturl"><a href="http://localhost:8080/api/AllProducts">http://localhost:8080/api/AllProducts</a></p>
+    <p  style="text-align:left;" id="Allproductlineurl"><a href="http://localhost:8080/api/AllProductLine">http://localhost:8080/api/AllProductLine</a></p>
+    
+    <div>
+        <div>
+            <form id="customerform" style="text-align:left;" method="get">
+              <label for="Customer">Enter any Customer ID from 1 to 2003:</label><br/>              
+            </form>
+        </div>
+        <input name="customer" id="customer"> 
+        <button type="button" onclick="CustomerApi()">Submit</button>
+        <p id="customerurl"><a id="oldelementcustomer"></a></p>
+    </div>
+    
+    <div>
+        <div>
+            <form id="employeeform" style="text-align:left;" method="get">
+              <label for="Employee">Enter any Employee ID from 1 to 16:</label><br/>
+            </form>
+        </div>
+        <input name="employee" id="employee">
+        <button type="button" onclick="EmployeeApi()">Submit</button>
+        <p id="employeeurl"><a id="oldelementemployee"></a></p>
+    </div>
+
+   
+    <div>
+        <div class="input-group w-auto">
+            <form id="officeemployeeform" style="text-align:left;" method="get">
+              <label for="OfficeEmployee">Select Employee's Office Code from List:</label><br/>
+            </form>
+        </div>
+        <select id="officeemployeecode"></select>
+        <button type="button" onclick="OfficeEmployeeApi()">Submit</button>
+        <p id="officeemployeeurl"><a id="oldelementofficeemployee"></a></p>
+    </div>
+
+    <div>
+        <div>
+            <form id="officeform" style="text-align:left;" method="get">
+              <label for="Office">Select Office Code from List:</label><br/>
+            </form>
+        </div>
+        <select id="officecode"></select>
+        <button type="button" onclick="OfficeApi()">Submit</button>
+        <p id="officeurl"><a id="oldelementoffice"></a></p>
+    </div>
+    
+    <script>
+           function CustomerApi() {
+                var paragraph = document.getElementById("customerurl");
+                var oldattribute = document.getElementById("oldelementcustomer");
+                paragraph.removeChild(oldattribute);
+                var CustomerID = document.getElementById("customer").value;
+                if(CustomerID!=null && CustomerID!="" && CustomerID>=1 && CustomerID<=2003){
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomer");
+                    attribute.setAttribute("href", "http://localhost:8080/api/Customer/"+CustomerID);
+                    attribute.innerHTML = "http://localhost:8080/api/Customer/"+CustomerID + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);
+                }
+                else{
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomer");
+                    attribute.innerHTML = "Invalid Entry"+"&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);    
+                }
+            }
+            function EmployeeApi() {
+                var paragraph = document.getElementById("employeeurl");
+                var oldattribute = document.getElementById("oldelementemployee");
+                paragraph.removeChild(oldattribute);
+                var EmployeeID = document.getElementById("employee").value;
+                if(EmployeeID!=null && EmployeeID!="" && EmployeeID>=1 && EmployeeID<=16){
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementemployee");
+                    attribute.setAttribute("href", "http://localhost:8080/api/Employee/"+EmployeeID);
+                    attribute.innerHTML = "http://localhost:8080/api/Employee/"+EmployeeID + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);
+                }
+                else{
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementemployee");
+                    attribute.innerHTML = "Invalid Entry"+"&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);    
+                }                
+            }
+            function OfficeEmployeeApi() {
+                var paragraph = document.getElementById("officeemployeeurl");
+                var oldattribute = document.getElementById("oldelementofficeemployee");
+                paragraph.removeChild(oldattribute);
+                var OfficeCode = document.getElementById("officeemployeecode").value;
+                var attribute = document.createElement("a");
+                attribute.setAttribute("id", "oldelementofficeemployee");        
+                attribute.setAttribute("href", "http://localhost:8080/api/OfficeEmployee/"+OfficeCode);
+                attribute.innerHTML = "http://localhost:8080/api/OfficeEmployee/"+OfficeCode + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                paragraph.appendChild(attribute)
+            }
+            function OfficeApi() {
+                var paragraph = document.getElementById("officeurl");
+                var oldattribute = document.getElementById("oldelementoffice");
+                paragraph.removeChild(oldattribute);                
+                var OfficeCode = document.getElementById("officecode").value;
+                var attribute = document.createElement("a");
+                attribute.setAttribute("id", "oldelementoffice");               
+                attribute.setAttribute("href", "http://localhost:8080/api/Office/"+OfficeCode);
+                attribute.innerHTML = "http://localhost:8080/api/Office/"+OfficeCode + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                paragraph.appendChild(attribute);
+            }                       
+    </script>
+    
+    <script>                
+        var officeemployeelist = document.getElementById("officeemployeecode");
+        var officelist = document.getElementById("officecode");
+        for (let num=1000; num<=1004; num++) {
+            var optionlist1 = document.createElement("OPTION");
+            optionlist1.setAttribute("value", num);
+            optionlist1.innerHTML=num;
+            officeemployeelist.appendChild(optionlist1);
+            var optionlist2 = document.createElement("OPTION");
+            optionlist2.setAttribute("value", num);
+            optionlist2.innerHTML=num;    
+            officelist.appendChild(optionlist2);
+        }
+    </script> 
+</body>
+</html>
