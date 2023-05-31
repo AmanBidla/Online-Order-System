@@ -39,12 +39,54 @@ public class PaymentService implements PaymentDao{
       
     @Override
     public List<Payment> FindPaymentDetailsByCustID(int CustomerID) throws DataAccessException{
-        return null;
+        try{
+            List<Payment> payments = jdbcTemplate.query("SELECT * FROM Payment WHERE CustomerID=?", (rs, rowNum) -> new Payment(
+                rs.getString("ChequeNo"),
+                rs.getInt("CustomerID"),
+                rs.getDate("PaymentDate"),
+                rs.getDouble("Amount")
+                ),
+                CustomerID);
+             return payments;
+        }
+        catch(DataAccessException ex){
+            throw ex;
+        }
     }
     
     @Override
-    public List<Payment> FindPayementDetailsByChequeNo(String ChequeNo) throws DataAccessException {
-        return null;
+    public Payment FindPayementDetailsByChequeNo(String ChequeNo) throws DataAccessException {
+       try{
+        Payment Payment = jdbcTemplate.queryForObject("SELECT * FROM Payment WHERE ChequeNo=?",(resultSet, rowNum) -> {
+            Payment payment = new Payment();
+            payment.setChequeNo(resultSet.getString("ChequeNo"));
+            payment.setCustomerID(resultSet.getInt("CustomerID"));
+            payment.setPaymentDate(resultSet.getDate("PaymentDate"));
+            payment.setAmount(resultSet.getDouble("RequiredDate"));
+            return payment;
+            },
+        ChequeNo);
+        return Payment;
+       }
+       catch(DataAccessException ex){
+           throw ex;
+       }
+    }
+
+    @Override
+    public List<Payment> AllPaymentDetails() throws DataAccessException {
+        try{
+            List<Payment> payments = jdbcTemplate.query("SELECT * FROM Payment", (rs, rowNum) -> new Payment(
+                rs.getString("ChequeNo"),
+                rs.getInt("CustomerID"),
+                rs.getDate("PaymentDate"),
+                rs.getDouble("Amount")
+                ));
+             return payments;
+        }
+        catch(DataAccessException ex){
+            throw ex;
+        }
     }
     
 }

@@ -19,6 +19,17 @@ public class Payment {
     private Date PaymentDate;
     private double Amount;
 
+    public Payment(String ChequeNo, int CustomerID, Date PaymentDate, double Amount){
+        this.ChequeNo=ChequeNo;
+        this.CustomerID=CustomerID;
+        this.PaymentDate=PaymentDate;
+        this.Amount=Amount;
+    }
+
+    public Payment(){
+
+    }
+    
     /**
      * @return the ChequeNo
      */

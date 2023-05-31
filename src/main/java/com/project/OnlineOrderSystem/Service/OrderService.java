@@ -219,6 +219,16 @@ public class OrderService implements OrderDao {
         double Amount = PriceEach*Quantity; 
         
         try{ 
+            jdbcTemplate.update("UPDATE Product SET Quantity=? WHERE Code=?"
+                                  + "VALUES (?, ?)", 
+                                    new Object[] 
+                                    {(Product.getQuantity()-Quantity), Product.getCode()});
+            }
+            catch(DataAccessException ex){
+                throw ex;
+            }
+        
+        try{ 
               jdbcTemplate.update("INSERT INTO [ORDER] (CustomerID, OrderDate, RequiredDate, Shipped , Status, Comments) "
                               + "VALUES (?, ?, ?, ?, ?, ?)", 
                                 new Object[] 

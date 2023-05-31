@@ -101,40 +101,128 @@ public class OrderProductController {
       }             
     }
 
-    public Set<List> AllOrderProductDetails() throws DataAccessException{
-    
-        return null;
-    
-    }
-    
-    public Set<List> FindOrderProductDetailsByTextDescription(String TextDescription) throws DataAccessException{
-    
-        return null;
-    
-    }
-    
-    public Set<List> FindOrderProductDetailsByCustomerID(int CustomerID) throws DataAccessException{
-    
-        return null;
-    
-    }
-    
-    public Set<Object> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException{
-    
-        return null;
-    
-    }
-    
-    public Set<List> FindOrderProductDetailsByOrderDate(Date OrderDate) throws DataAccessException{
-    
-        return null;
-    
+    @RequestMapping(value = "/AllOrderProductDetails", method = RequestMethod.GET)
+    public CollectionModel<EntityModel> AllOrderProductDetails() throws DataAccessException{
+       try{
+         Set<List> OrderProductSet = OrderProductDao.AllOrderProductDetails();
+         
+         Set <EntityModel> ModelAssembler = OrderProductDetailsPackaging(OrderProductSet);
+        
+         return CollectionModel.of(ModelAssembler,
+                linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withSelfRel());
+      }
+       catch(DataAccessException ex){
+         throw new OrderProductNotFoundException(ex);
+      }    
     }
 
-    public Set<List> FindOrderProductDetailsByPriceEach(double PriceEach) throws DataAccessException{
+    @RequestMapping(value = "/OrderProductDetailsByTextDescription/{TextDescription}", method = RequestMethod.GET)    
+    public CollectionModel<EntityModel> FindOrderProductDetailsByTextDescription(@PathVariable String TextDescription) throws DataAccessException{
+       try{
+         Set<List> OrderProductSet = OrderProductDao.FindOrderProductDetailsByTextDescription(TextDescription);
+         
+         Set <EntityModel> ModelAssembler = OrderProductDetailsPackaging(OrderProductSet);
+        
+         return CollectionModel.of(ModelAssembler,
+                linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withSelfRel());
+      }
+       catch(DataAccessException ex){
+         throw new OrderProductNotFoundException(ex);
+      }        
+    }
     
-        return null;
+    @RequestMapping(value = "/OrderProductDetailsByCustomerID/{CustomerID}", method = RequestMethod.GET)
+    public CollectionModel<EntityModel> FindOrderProductDetailsByCustomerID(@PathVariable int CustomerID) throws DataAccessException{
+       try{
+         Set<List> OrderProductSet = OrderProductDao.FindOrderProductDetailsByCustomerID(CustomerID);
+         
+         Set <EntityModel> ModelAssembler = OrderProductDetailsPackaging(OrderProductSet);
+        
+         return CollectionModel.of(ModelAssembler,
+                linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withSelfRel());
+      }
+       catch(DataAccessException ex){
+         throw new OrderProductNotFoundException(ex);
+      }            
+    }
     
+    @RequestMapping(value = "/OrderProductDetailsByOrderID/{OrderID}", method = RequestMethod.GET)
+    public CollectionModel<EntityModel> FindOrderProductDetailsByOrderID(@PathVariable int OrderID) throws DataAccessException{
+       try{
+         Set<List> OrderProductSet = OrderProductDao.FindOrderProductDetailsByOrderID(OrderID);
+         
+         Set <EntityModel> ModelAssembler = OrderProductDetailsPackaging(OrderProductSet);
+        
+         return CollectionModel.of(ModelAssembler,
+                linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withSelfRel());
+      }
+       catch(DataAccessException ex){
+         throw new OrderProductNotFoundException(ex);
+      }    
+    }
+    
+    @RequestMapping(value = "/OrderProductDetailsByOrderDate/{OrderDate}", method = RequestMethod.GET)
+    public CollectionModel<EntityModel> FindOrderProductDetailsByOrderDate(@PathVariable Date OrderDate) throws DataAccessException{
+       try{
+         Set<List> OrderProductSet = OrderProductDao.FindOrderProductDetailsByOrderDate(OrderDate);
+         
+         Set <EntityModel> ModelAssembler = OrderProductDetailsPackaging(OrderProductSet);
+        
+         return CollectionModel.of(ModelAssembler,
+                linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withSelfRel());
+      }
+       catch(DataAccessException ex){
+         throw new OrderProductNotFoundException(ex);
+      }        
     }
 
+    @RequestMapping(value = "/OrderProductDetailsByPriceEach/{PriceEach}", method = RequestMethod.GET)
+    public CollectionModel<EntityModel> FindOrderProductDetailsByPriceEach(@PathVariable double PriceEach) throws DataAccessException{
+       try{
+         Set<List> OrderProductSet = OrderProductDao.FindOrderProductDetailsByPriceEach(PriceEach);
+         
+         Set <EntityModel> ModelAssembler = OrderProductDetailsPackaging(OrderProductSet);
+        
+         return CollectionModel.of(ModelAssembler,
+                linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withSelfRel());
+      }
+       catch(DataAccessException ex){
+         throw new OrderProductNotFoundException(ex);
+      }     
+    }
+    
+    public Set<EntityModel> OrderProductDetailsPackaging(Set<List> OrderProductSet){
+         
+         Set<EntityModel> ModelAssembler = new HashSet<>();
+         
+         List<OrderProduct> orderproduct=null;
+         List<Order> order=null;
+         List<Product> product=null;
+         List<ProductLine> productline=null;
+         
+         for(int i=0; i<OrderProductSet.size(); i++){
+            if(OrderProductSet.contains(orderproduct)){
+                for(OrderProduct value : orderproduct){
+                    ModelAssembler.add(Assembler.toModel(value));    
+                }                
+            }
+            else if(OrderProductSet.contains(order)){
+                for(Order value : order){
+                    ModelAssembler.add(OrderAssembler.toModel(value));    
+                }
+            }             
+            else if(OrderProductSet.contains(product)){
+                for(Product value : product){
+                    ModelAssembler.add(ProductAssembler.toModel(value));    
+                }           
+            }
+            else if(OrderProductSet.contains(productline)){
+                for(ProductLine value : productline){
+                    ModelAssembler.add(ProductLineAssembler.toModel(value));    
+                }             
+            }
+     
+        }
+        return ModelAssembler;
+    }
 }

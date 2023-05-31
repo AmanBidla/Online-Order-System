@@ -172,40 +172,41 @@ public class OrderProductService implements OrderProductDao {
     }
 
     @Override
-    public Set<Object> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException {
+    public Set<List> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException {
         try {
-           Set<Object> OrderProductSet = new HashSet<>();
-            OrderProduct OrderProduct = jdbcTemplate.queryForObject("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?",(resultSet, rowNum) -> {
-                OrderProduct orderproduct= new OrderProduct();
-                orderproduct.setOrderID(resultSet.getInt("OrderID"));
-                orderproduct.setProductCode(resultSet.getInt("ProductCode"));
-                orderproduct.setQuantity( resultSet.getInt("Quantity"));
-                orderproduct.setPriceEach(resultSet.getDouble("PriceEach"));
-
-                return orderproduct;
-            },
+            Set<List> OrderProductSet = new HashSet<>();
+            List<OrderProduct> orderproduct = jdbcTemplate.query("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?", (rs, rowNum) -> new OrderProduct(
+                    rs.getInt("OrderID"),
+                    rs.getInt("ProductCode"),
+                    rs.getInt("Quantity"),
+                    rs.getDouble("PriceEach")
+            ),
             OrderID);
-            
-            OrderProductSet.add(OrderProduct);
 
-            Product Product = jdbcTemplate.queryForObject("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?",(resultSet, rowNum) -> {
-                Product product= new Product();
-                product.setName(resultSet.getString("Name"));
-                product.setvendor(resultSet.getString("vendor"));
-                return product;
-            },
-            OrderID);
-            
-            OrderProductSet.add(Product);
+            OrderProductSet.add(orderproduct);
 
-            ProductLine ProductLine = jdbcTemplate.queryForObject("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?",(resultSet, rowNum) -> {
-                ProductLine productline= new ProductLine();
-                productline.setTextDescription(resultSet.getString("TextDescription"));
-                return productline;
-            },
+            List<Order> order = jdbcTemplate.query("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?", (rs, rowNum) -> new Order(
+                    rs.getInt("CustomerID"),
+                    rs.getDate("OrderDate")
+            ),
             OrderID);
-            
-            OrderProductSet.add(ProductLine);
+
+            OrderProductSet.add(order);
+
+            List<Product> product = jdbcTemplate.query("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?", (rs, rowNum) -> new Product(
+                    rs.getString("Name"),
+                    rs.getString("vendor")
+            ),
+            OrderID);
+
+            OrderProductSet.add(product);
+
+            List<ProductLine> productline = jdbcTemplate.query("SELECT ProductCode, [Name], TextDescription, vendor, CustomerID, OrderID, OrderDate, Order_Product.Quantity, PriceEach FROM [Order] join Order_Product ON [Order].ID=Order_Product.OrderID join Product ON Product.Code=Order_Product.ProductCode join ProductLine ON ProductLine.ID=Product.ProductLineID WHERE OrderID=?", (rs, rowNum) -> new ProductLine(
+                    rs.getString("TextDescription")
+            ),
+            OrderID);
+
+            OrderProductSet.add(productline);
 
             return OrderProductSet;
         } catch (DataAccessException ex) {

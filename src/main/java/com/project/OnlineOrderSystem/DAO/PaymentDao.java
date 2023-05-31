@@ -15,5 +15,6 @@ import org.springframework.dao.DataAccessException;
  */
 public interface PaymentDao{
     List<Payment> FindPaymentDetailsByCustID(int CustomerID) throws DataAccessException;
-    List<Payment> FindPayementDetailsByChequeNo(String ChequeNo) throws DataAccessException;
+    Payment FindPayementDetailsByChequeNo(String ChequeNo) throws DataAccessException;
+    List<Payment> AllPaymentDetails() throws DataAccessException;
 }

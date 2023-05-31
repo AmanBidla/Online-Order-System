@@ -22,7 +22,7 @@ public interface OrderProductDao{
     Set<List> FindOrderProductDetailsByProductCode(int ProductCode) throws DataAccessException;
     Set<List> FindOrderProductDetailsByTextDescription(String TextDescription) throws DataAccessException;
     Set<List> FindOrderProductDetailsByCustomerID(int CustomerID) throws DataAccessException;
-    Set<Object> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException;
+    Set<List> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException;
     Set<List> FindOrderProductDetailsByOrderDate(Date OrderDate) throws DataAccessException;
     Set<List> FindOrderProductDetailsByPriceEach(double PriceEach) throws DataAccessException;
     Set<List> AllOrderProductDetails() throws DataAccessException;
