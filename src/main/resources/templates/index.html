@@ -14,18 +14,20 @@ and open the template in the editor.
     
     <h2 style="text-align:left;">GET API's</h2>
     
-    <p  style="text-align:left;" id="Allcustomerurl"><a href="http://localhost:8080/api/AllCustomers">http://localhost:8080/api/AllCustomers</a></p>
-    <p  style="text-align:left;" id="Allemployeeurl"><a href="http://localhost:8080/api/AllEmployees">http://localhost:8080/api/AllEmployees</a></p>
-    <p  style="text-align:left;" id="Allofficeurl"><a href="http://localhost:8080/api/AllOffices">http://localhost:8080/api/AllOffices</a></p>
-    <p  style="text-align:left;" id="Allorderurl"><a href="http://localhost:8080/api/AllOrders">http://localhost:8080/api/AllOrders</a></p>
-    <p  style="text-align:left;" id="Allorderproductdetailurl"><a href="http://localhost:8080/api/AllOrderProductDetail">http://localhost:8080/api/AllOrderProductDetail</a></p>
-    <p  style="text-align:left;" id="Allproducturl"><a href="http://localhost:8080/api/AllProducts">http://localhost:8080/api/AllProducts</a></p>
-    <p  style="text-align:left;" id="Allproductlineurl"><a href="http://localhost:8080/api/AllProductLine">http://localhost:8080/api/AllProductLine</a></p>
+    <p  style="text-align:left;" id="Allcustomerurl"><a style="font-weight: bold;">All Customers</a><br/><a href="http://localhost:8080/api/AllCustomers">http://localhost:8080/api/AllCustomers</a></p>
+    <p  style="text-align:left;" id="Allemployeeurl"><a style="font-weight: bold;">All Employees</a><br/><a href="http://localhost:8080/api/AllEmployees">http://localhost:8080/api/AllEmployees</a></p>
+    <p  style="text-align:left;" id="Allofficeurl"><a style="font-weight: bold;">All Offices</a><br/><a href="http://localhost:8080/api/AllOffices">http://localhost:8080/api/AllOffices</a></p>
+    <p  style="text-align:left;" id="Allorderurl"><a style="font-weight: bold;">All Orders</a><br/><a href="http://localhost:8080/api/AllOrders">http://localhost:8080/api/AllOrders</a></p>
+    <p  style="text-align:left;" id="Allorderproductdetailurl"><a style="font-weight: bold;">All OrderProductDetail</a><br/><a href="http://localhost:8080/api/AllOrderProductDetail">http://localhost:8080/api/AllOrderProductDetail</a></p>
+    <p  style="text-align:left;" id="Allorderproductdetailurl"><a style="font-weight: bold;">All Payments</a><br/><a href="http://localhost:8080/api/AllPayments">http://localhost:8080/api/AllPayments</a></p>
+    <p  style="text-align:left;" id="Allproducturl"><a style="font-weight: bold;">All Products</a><br/><a href="http://localhost:8080/api/AllProducts">http://localhost:8080/api/AllProducts</a></p>
+    <p  style="text-align:left;" id="Allproductlineurl"><a style="font-weight: bold;">All ProductLine</a><br/><a href="http://localhost:8080/api/AllProductLine">http://localhost:8080/api/AllProductLine</a></p>
     
     <div>
         <div>
             <form id="customerform" style="text-align:left;" method="get">
-              <label for="Customer">Enter any Customer ID from 1 to 2003:</label><br/>              
+              <label for="Customer" style="font-weight: bold;">Customer</label><br/>
+              <label for="Customer">Enter any Customer ID from 1 to 2003:</label><br/>
             </form>
         </div>
         <input name="customer" id="customer"> 
@@ -36,6 +38,7 @@ and open the template in the editor.
     <div>
         <div>
             <form id="employeeform" style="text-align:left;" method="get">
+              <label for="Customer" style="font-weight: bold;">Employee</label><br/>
               <label for="Employee">Enter any Employee ID from 1 to 16:</label><br/>
             </form>
         </div>
@@ -48,7 +51,8 @@ and open the template in the editor.
     <div>
         <div class="input-group w-auto">
             <form id="officeemployeeform" style="text-align:left;" method="get">
-              <label for="OfficeEmployee">Select Employee's Office Code from List:</label><br/>
+              <label for="OfficeEmployee" style="font-weight: bold;">Employee's Office</label><br/>  
+              <label for="OfficeEmployee">Select Employee's Office Code from List:</label>
             </form>
         </div>
         <select id="officeemployeecode"></select>
@@ -59,12 +63,64 @@ and open the template in the editor.
     <div>
         <div>
             <form id="officeform" style="text-align:left;" method="get">
-              <label for="Office">Select Office Code from List:</label><br/>
+              <label for="OfficeEmployee" style="font-weight: bold;">Office Employees</label><br/>
+              <label for="Office">Select Office Code from List:</label>
             </form>
         </div>
         <select id="officecode"></select>
         <button type="button" onclick="OfficeApi()">Submit</button>
         <p id="officeurl"><a id="oldelementoffice"></a></p>
+    </div>
+
+    <div>
+        <div>
+            <form id="orderform" style="text-align:left;" method="get">
+              <label for="Order" style="font-weight: bold;">Order</label><br/>           
+              <label for="Order">Enter Order ID from 1 to 100:</label><br/>
+            </form>
+        </div>
+        <input name="order" id="order">
+        <button type="button" onclick="OrderApi()">Submit</button>
+        <p id="orderurl"><a id="oldelementorder"></a></p>
+    </div>  
+
+    <div>
+        <form id="customerordersform" style="text-align:left;" method="get">
+              <label for="CustomerOrders" style="font-weight: bold;">Customer Orders</label><br/>
+              <label for="CustomerOrders">Enter Customer ID from 1 to 2003:</label><br/>
+        </form>
+        </div>
+        <input name="customerorders" id="customerorders">
+        <button type="button" onclick="CustomerOrdersApi()">Submit</button>
+        <p id="customerordersurl"><a id="oldelementcustomerorders"></a></p>
+    </div>    
+
+    <div>
+        <form id="customersorderform" style="text-align:left;" method="get">
+              <label for="CustomersOrders" style="font-weight: bold;">Customer's Order</label><br/>  
+              <label for="CustomersOrder">Enter Order ID from 1 to 100:</label>
+              <input name="customersorder" id="customersorderOrdID"><br/>
+              <label for="CustomersOrder" >Enter Customer ID from 1 to 2003:</label>
+              <input name="customersorder" id="customersorderCustID"><br/>              
+        </form>
+        </div>
+        <button type="button" onclick="CustomersOrderApi()">Submit</button>
+        <p id="customersorderurl"><a id="oldelementcustomersorder"></a></p>
+    </div>
+
+    <div>
+        <form id="customersorderdateform" style="text-align:left;" method="get">
+              <label for="CustomerOrderDate" style="font-weight: bold;">Customer's Order</label><br/>  
+              <label for="CustomerOrderDate">Enter Order ID from 1 to 100:</label>
+              <input name="customersorderdate" id="customerorderOrdID"><br/>
+              <label for="CustomerOrderDate" >Enter Customer ID from 1 to 2003:</label>
+              <input name="customerorderdate" id="customerorderCustID"><br/>
+              <label for="CustomerOrderDate" >Enter Order Date(01-Jan-20):</label>
+              <input name="customerorderdate" id="customerorderDate"><br/>              
+        </form>
+        </div>
+        <button type="button" onclick="CustomerOrderDateApi()">Submit</button>
+        <p id="customerorderdateurl"><a id="oldelementcustomerorderdate"></a></p>
     </div>
     
     <script>
@@ -128,8 +184,96 @@ and open the template in the editor.
                 attribute.innerHTML = "http://localhost:8080/api/Office/"+OfficeCode + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
                 paragraph.appendChild(attribute);
             }                       
+
+           function OrderApi() {
+                var paragraph = document.getElementById("orderurl");
+                var oldattribute = document.getElementById("oldelementorder");
+                paragraph.removeChild(oldattribute);
+                var OrderID = document.getElementById("order").value;
+                if(OrderID!=null && OrderID!="" && OrderID>=1 && OrderID<=100){
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementorder");
+                    attribute.setAttribute("href", "http://localhost:8080/api/Order/"+OrderID);
+                    attribute.innerHTML = "http://localhost:8080/api/Order/"+OrderID + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);
+                }
+                else{
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementorder");
+                    attribute.innerHTML = "Invalid Entry"+"&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);    
+                }
+            }
+
+           function CustomerOrdersApi() {
+                var paragraph = document.getElementById("customerordersurl");
+                var oldattribute = document.getElementById("oldelementcustomerorders");
+                paragraph.removeChild(oldattribute);
+                var CustomerID = document.getElementById("customerorders").value;
+                if(CustomerID!=null && CustomerID!="" && CustomerID>=1 && CustomerID<=2003){
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomerorders");
+                    attribute.setAttribute("href", "http://localhost:8080/api/CustomerOrders/"+CustomerID);
+                    attribute.innerHTML = "http://localhost:8080/api/CustomerOrders/"+CustomerID + "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);
+                }
+                else{
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomerorders");
+                    attribute.innerHTML = "Invalid Entry"+"&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);    
+                }
+            }            
+
+
+           function CustomersOrderApi() {
+                var paragraph = document.getElementById("customersorderurl");
+                var oldattribute = document.getElementById("oldelementcustomersorder");
+                paragraph.removeChild(oldattribute);
+                var CustomerID = document.getElementById("customersorderCustID").value;
+                var OrderID = document.getElementById("customersorderOrdID").value;
+                
+                if(CustomerID!=null && CustomerID!="" && CustomerID>=1 && CustomerID<=2003 && OrderID!=null && OrderID!="" && OrderID>=1 && OrderID<=100){
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomersorder");
+                    attribute.setAttribute("href", "http://localhost:8080/api/CustomersOrder/"+OrderID+"/"+CustomerID);
+                    attribute.innerHTML = "http://localhost:8080/api/CustomersOrder/"+OrderID+"/"+CustomerID+ "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);
+                }
+                else{
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomersorder");
+                    attribute.innerHTML = "Invalid Entry"+"&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);    
+                }
+            }            
+            
+           function CustomerOrderDateApi() {
+                var paragraph = document.getElementById("customerorderdateurl");
+                var oldattribute = document.getElementById("oldelementcustomerorderdate");
+                paragraph.removeChild(oldattribute);
+                var CustomerID = document.getElementById("customerorderCustID").value;
+                var OrderID = document.getElementById("customerorderOrdID").value;
+                var OrderDate = document.getElementById("customerorderOrdDate").value;
+                var DateArray = OrderDate.split(" ");
+                var MonthArray = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sept", "Oct", "Nov", "Dec"];
+                if(CustomerID!=null && CustomerID!="" && CustomerID>=1 && CustomerID<=2003 && OrderID!=null && OrderID!="" && OrderID>=1 && OrderID<=100 && OrderDate!=null && OrderDate!="" && typeof DateArray[0]!="number" && DateArray[0]<1 && typeof DateArray[1]!="String" ){
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomersorder");
+                    attribute.setAttribute("href", "http://localhost:8080/api/CustomersOrder/"+OrderID+"/"+CustomerID);
+                    attribute.innerHTML = "http://localhost:8080/api/CustomersOrder/"+OrderID+"/"+CustomerID+ "&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);
+                }
+                else{
+                    var attribute = document.createElement("a");
+                    attribute.setAttribute("id", "oldelementcustomersorder");
+                    attribute.innerHTML = "Invalid Entry"+"&nbsp;&nbsp;&nbsp;"+ "<br/>";
+                    paragraph.appendChild(attribute);    
+                }
+            }                        
+/CustomersOrderOrderDate/{OrderID}/{CustomerID}/{OrderDate}        
     </script>
-    
+        
     <script>                
         var officeemployeelist = document.getElementById("officeemployeecode");
         var officelist = document.getElementById("officecode");

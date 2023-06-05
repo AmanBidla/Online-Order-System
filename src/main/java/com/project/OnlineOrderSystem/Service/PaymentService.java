@@ -62,7 +62,7 @@ public class PaymentService implements PaymentDao{
             payment.setChequeNo(resultSet.getString("ChequeNo"));
             payment.setCustomerID(resultSet.getInt("CustomerID"));
             payment.setPaymentDate(resultSet.getDate("PaymentDate"));
-            payment.setAmount(resultSet.getDouble("RequiredDate"));
+            payment.setAmount(resultSet.getDouble("Amount"));
             return payment;
             },
         ChequeNo);

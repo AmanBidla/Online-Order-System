@@ -19,7 +19,5 @@ public interface CustomerDao{
     
     Customer FindCustomerByID(int ID) throws DataAccessException;
     List<Customer> ListOfCustomers() throws DataAccessException;
-    Map<Integer, Employee> CreateNewCustomer(Customer customer) throws DataAccessException;
-
-    
+    Map<Integer, Employee> CreateNewCustomer(Customer customer) throws DataAccessException;   
 }

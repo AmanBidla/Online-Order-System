@@ -29,8 +29,11 @@ public class OrderProduct {
     
     
     public OrderProduct(int OrderID, int ProductCode, int Quantity, double PriceEach) {
-        this.OrderID=OrderID;
-        this.ProductCode=ProductCode;
+        this.Quantity=Quantity;
+        this.PriceEach=PriceEach;
+    }
+    
+    public OrderProduct(int Quantity, double PriceEach) {
         this.Quantity=Quantity;
         this.PriceEach=PriceEach;
     }

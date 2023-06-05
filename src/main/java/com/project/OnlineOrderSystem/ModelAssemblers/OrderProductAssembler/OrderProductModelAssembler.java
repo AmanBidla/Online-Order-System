@@ -5,6 +5,7 @@
  */
 package com.project.OnlineOrderSystem.ModelAssemblers.OrderProductAssembler;
 
+import com.project.OnlineOrderSystem.Exception.OrderProductExceptions.OrderProductNotFoundException;
 import com.project.OnlineOrderSystem.ModelAssemblers.OrderAssembler.*;
 import com.project.OnlineOrderSystem.ModelAssemblers.OfficeAssembler.*;
 import com.project.OnlineOrderSystem.ModelAssemblers.EmployeeAssembler.*;
@@ -16,24 +17,29 @@ import com.project.OnlineOrderSystem.RestController.EmployeeController;
 import com.project.OnlineOrderSystem.RestController.OfficeController;
 import com.project.OnlineOrderSystem.RestController.OrderController;
 import com.project.OnlineOrderSystem.RestController.OrderProductController;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.stereotype.Component;
+import java.sql.SQLException;
+import org.springframework.dao.DataAccessException;
 
 /**
  *
  * @author Aman Bidla
  */
 @Component
-public class OrderProductModelAssembler implements RepresentationModelAssembler<OrderProduct, EntityModel<OrderProduct>>{
+public class OrderProductModelAssembler implements RepresentationModelAssembler<OrderProduct, EntityModel<OrderProduct>> {
   
   @Override
   public EntityModel<OrderProduct> toModel(OrderProduct orderproduct) {
 
-    return EntityModel.of(orderproduct,
-        linkTo(methodOn(OrderProductController.class).FindOrderProductDetailsByProductCode(orderproduct.getProductCode())).withSelfRel(),
-        linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withRel("OrderProducts"));
+          return EntityModel.of(orderproduct,
+                  linkTo(methodOn(OrderProductController.class).FindOrderProductDetailsByProductCode(orderproduct.getProductCode())).withSelfRel(),
+                  linkTo(methodOn(OrderProductController.class).AllOrderProductDetails()).withRel("OrderProducts"));
   } 
 }

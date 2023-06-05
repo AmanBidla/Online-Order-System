@@ -9,21 +9,23 @@ import com.project.OnlineOrderSystem.Model.Order;
 import com.project.OnlineOrderSystem.Model.OrderProduct;
 import com.project.OnlineOrderSystem.Model.Product;
 import com.project.OnlineOrderSystem.Model.ProductLine;
+import java.sql.SQLException;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import org.springframework.dao.DataAccessException;
+import org.springframework.hateoas.EntityModel;
 
 /**
  *
  * @author Aman Bidla
  */
 public interface OrderProductDao{
-    Set<List> FindOrderProductDetailsByProductCode(int ProductCode) throws DataAccessException;
-    Set<List> FindOrderProductDetailsByTextDescription(String TextDescription) throws DataAccessException;
-    Set<List> FindOrderProductDetailsByCustomerID(int CustomerID) throws DataAccessException;
-    Set<List> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException;
-    Set<List> FindOrderProductDetailsByOrderDate(Date OrderDate) throws DataAccessException;
-    Set<List> FindOrderProductDetailsByPriceEach(double PriceEach) throws DataAccessException;
-    Set<List> AllOrderProductDetails() throws DataAccessException;
+    List<List<EntityModel>> FindOrderProductDetailsByProductCode(int ProductCode) throws DataAccessException;
+    List<List<EntityModel>> FindOrderProductDetailsByTextDescription(String TextDescription) throws DataAccessException;
+    List<List<EntityModel>> FindOrderProductDetailsByCustomerID(int CustomerID) throws DataAccessException;
+    List<List<EntityModel>> FindOrderProductDetailsByOrderID(int OrderID) throws DataAccessException;
+    List<List<EntityModel>> FindOrderProductDetailsByOrderDate(Date OrderDate) throws DataAccessException;
+    List<List<EntityModel>> FindOrderProductDetailsByPriceEach(double PriceEach) throws DataAccessException;
+    List<List<EntityModel>> AllOrderProductDetails() throws DataAccessException;
 }
