@@ -17,6 +17,6 @@ import org.springframework.dao.DataAccessException;
 public interface ProductDao{
     Product FindProductByID(int ProductCode) throws DataAccessException;
     List<Product> AllProducts() throws DataAccessException;
-    int CreateProduct(Product product) throws DataAccessException;
-    void UpdateProduct(Product product) throws DataAccessException;
+    Product CreateProduct(Product product) throws DataAccessException;
+    Product UpdateProduct(Product product) throws DataAccessException;
 }

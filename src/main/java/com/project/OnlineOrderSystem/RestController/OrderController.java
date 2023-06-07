@@ -9,8 +9,16 @@ import com.project.OnlineOrderSystem.DAO.OrderDao;
 import com.project.OnlineOrderSystem.Exception.OrderExceptions.OrderNotFoundException;
 import com.project.OnlineOrderSystem.Model.Order;
 import com.project.OnlineOrderSystem.ModelAssemblers.OrderAssembler.OrderModelAssembler;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +29,7 @@ import org.springframework.hateoas.EntityModel;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.linkTo;
 import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -153,10 +162,30 @@ public class OrderController {
       }  
     }
 
-   @RequestMapping(value = "/NewOrder/{CustomerID}/{ProductCode}/{Quantity}/{Comments}/{OrderDate}/{RequiredDate}/{ChequeNo}", method = RequestMethod.GET)
-   public EntityModel<Order> CreateOrder(@PathVariable(name = "CustomerID") int CustomerID, @PathVariable(name = "ProductCode") int ProductCode, @PathVariable(name = "Quantity") int Quantity, @PathVariable(name = "Comments") String Comments, @PathVariable(name = "OrderDate") Date OrderDate, @PathVariable(name = "RequiredDate") Date RequiredDate, @PathVariable(name = "ChequeNo") String ChequeNo) throws DataAccessException {
+   @RequestMapping(value = "/NewOrder", method = RequestMethod.POST)
+   //public EntityModel<Order> CreateOrder(@RequestBody int CustomerID, int ProductCode, int Quantity, String Comments, Date OrderDate, Date RequiredDate, String ChequeNo) throws DataAccessException {
+    public EntityModel<Order> CreateOrder(@RequestBody Map<String, String> OrderProduct) throws DataAccessException { 
+        String OrderDate = OrderProduct.get("orderDate");
+        String RequireDate = OrderProduct.get("requireDate");
+        DateFormat format = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH);
+        Date orderDate=null;
+        try {
+            orderDate = format.parse(OrderDate);
+        } catch (ParseException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        Date requireDate=null;
+        try {
+            requireDate = format.parse(RequireDate);
+        } catch (ParseException ex) {
+            Logger.getLogger(OrderController.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        /*DateTimeFormatter formatter = DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH);
+        LocalDate orderDate = Date.parse(OrderDate, formatter);
+        LocalDate requireDate = Date.parse(RequireDate, formatter);*/
+      
       try{ 
-        Order order =  Order.CreateNewOrder(CustomerID, ProductCode, Quantity, Comments, OrderDate, RequiredDate, ChequeNo);
+        Order order =  Order.CreateNewOrder(Integer.parseInt(OrderProduct.get("customerID")), Integer.parseInt(OrderProduct.get("productCode")), Integer.parseInt(OrderProduct.get("quantity")), OrderProduct.get("comments"), orderDate, requireDate, OrderProduct.get("chequeNo"));
          return Assembler.toModel(order);      
       }
       catch(DataAccessException ex){

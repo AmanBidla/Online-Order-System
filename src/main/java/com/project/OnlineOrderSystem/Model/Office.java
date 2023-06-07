@@ -28,6 +28,14 @@ public class Office {
         this.Phone=Phone;
     }
     
+    public Office(String Address1, String Address2, String City, String PostalCode, String Phone){
+        this.Address1=Address1;
+        this.Address2=Address2;
+        this.City=City;
+        this.PostalCode=PostalCode;
+        this.Phone=Phone;
+    }    
+    
     public Office(){
     
     }

@@ -77,24 +77,19 @@ public class ProductController {
 
     @RequestMapping(value = "/NewProduct", method = RequestMethod.POST)
     public ResponseEntity<?> CreateNewProduct(@RequestBody Product newProduct) {
-        
-        int ProductCode=newProduct.getCode();
-        
+        String message = Integer.toString(newProduct.getProductLineID())+" "+newProduct.getName()+" "+newProduct.getVendor()+" "+newProduct.getDescription()+" "+Integer.toString(newProduct.getQuantity())+" "+Double.toString(newProduct.getBuyPrice())+" "+Double.toString(newProduct.getMSRP());
+        logger.info(message);
+   
         try{
             
-            ProductCode = Product.CreateProduct(newProduct);
+            Product productnew = Product.CreateProduct(newProduct);
             
-            if(ProductCode!=0){
-                EntityModel<Product> product = Assembler.toModel(Product.FindProductByID(ProductCode));
+                EntityModel<Product> product = Assembler.toModel(productnew);
                 
             
                 return ResponseEntity
                         .created(product.getRequiredLink(IanaLinkRelations.SELF).toUri())
                         .body(product);
-            }
-            else {
-                return ResponseEntity.ok("Failed to Create Product");
-            }
         }
         catch(DataAccessException ex){
           throw new ProductNotFoundException(ex);
@@ -104,9 +99,9 @@ public class ProductController {
     @RequestMapping(value = "/UpdateProduct", method = RequestMethod.POST)
     public ResponseEntity<?> UpdateProduct(@RequestBody Product newProduct) {
         try{          
-            Product.UpdateProduct(newProduct);
+            Product updatedproduct = Product.UpdateProduct(newProduct);
             
-            EntityModel<Product> product = Assembler.toModel(Product.FindProductByID(newProduct.getCode()));
+            EntityModel<Product> product = Assembler.toModel(updatedproduct);
                 
             
             return ResponseEntity

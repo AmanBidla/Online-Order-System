@@ -9,6 +9,7 @@ import com.project.OnlineOrderSystem.DAO.ProductDao;
 import com.project.OnlineOrderSystem.Model.Product;
 import java.util.List;
 import java.util.Optional;
+import java.util.logging.Logger;
 import javax.sql.DataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
@@ -36,7 +37,8 @@ public class ProductService implements ProductDao{
 	this.namedParameterJdbcTemplate = new NamedParameterJdbcTemplate(dataSource);
 	this.jdbcTemplate = new JdbcTemplate(dataSource);
     }
-
+    private Logger logger = Logger.getLogger(ProductService.class.toString());
+    
     @Override
     public Product FindProductByID(int ProductCode) throws DataAccessException{
         try{ 
@@ -45,7 +47,7 @@ public class ProductService implements ProductDao{
             product.setCode(resultSet.getInt("Code"));
             product.setProductLineID(resultSet.getInt("ProductLineID"));
             product.setName(resultSet.getString("Name"));
-            product.setvendor(resultSet.getString("vendor"));
+            product.setVendor(resultSet.getString("vendor"));
             product.setDescription(resultSet.getString("Description"));
             product.setQuantity(resultSet.getInt("Quantity"));
             product.setBuyPrice(resultSet.getDouble("BuyPrice"));
@@ -81,12 +83,14 @@ public class ProductService implements ProductDao{
     }
 
     @Override
-    public int CreateProduct(Product product) throws DataAccessException {
+    public Product CreateProduct(Product product) throws DataAccessException {
+            String message = Integer.toString(product.getProductLineID())+" "+product.getName()+" "+product.getVendor()+" "+product.getDescription()+" "+Integer.toString(product.getQuantity())+" "+Double.toString(product.getBuyPrice())+" "+Double.toString(product.getMSRP());
+            logger.info(message);
             try{ 
                 jdbcTemplate.update("INSERT INTO Product (ProductLineID, Name, vendor, Description, Quantity, BuyPrice, MSRP) "
                                   + "VALUES (?, ?, ?, ?, ?, ?, ?)", 
                                     new Object[] 
-                                    {product.getCode(), product.getProductLineID(), product.getName(), product.getvendor(), product.getDescription(), product.getQuantity(), product.getBuyPrice(), product.getMSRP()});
+                                    {product.getProductLineID(), product.getName(), product.getVendor(), product.getDescription(), product.getQuantity(), product.getBuyPrice(), product.getMSRP()});
                 }
                 catch(DataAccessException ex){
                     throw ex;
@@ -98,15 +102,15 @@ public class ProductService implements ProductDao{
                 newproduct.setCode(resultSet.getInt("Code"));
                 newproduct.setProductLineID(resultSet.getInt("ProductLineID"));
                 newproduct.setName(resultSet.getString("Name"));
-                newproduct.setvendor(resultSet.getString("vendor"));
+                newproduct.setVendor(resultSet.getString("vendor"));
                 newproduct.setDescription(resultSet.getString("Description"));
                 newproduct.setQuantity(resultSet.getInt("Quantity"));
                 newproduct.setBuyPrice(resultSet.getDouble("BuyPrice"));
                 newproduct.setMSRP(resultSet.getDouble("MSRP"));
                 return newproduct;
                 },
-                product.getCode(), product.getProductLineID(), product.getName(), product.getvendor(), product.getDescription(), product.getQuantity(), product.getBuyPrice(), product.getMSRP());
-                return Product.getCode();
+                product.getName(), product.getProductLineID(), product.getVendor(), product.getDescription(), product.getQuantity(), product.getBuyPrice(), product.getMSRP());
+                return Product;
             }
             catch(DataAccessException ex){
                 throw ex;
@@ -114,15 +118,21 @@ public class ProductService implements ProductDao{
         }
 
     @Override
-    public void UpdateProduct(Product product) throws DataAccessException {
+    public Product UpdateProduct(Product product) throws DataAccessException {
             try{ 
-                jdbcTemplate.update("UPDATE Product SET ProductLineID=?, Name=?, vendor=?, Description=?, Quantity=?, BuyPrice=?, MSRP=? WHERE Code=?"
-                                  + "VALUES (?, ?, ?, ?, ?, ?, ?)", 
+                jdbcTemplate.update("UPDATE Product SET ProductLineID=?, Name=?, vendor=?, Description=?, Quantity=?, BuyPrice=?, MSRP=? WHERE Code=?",
                                     new Object[] 
-                                    {product.getProductLineID(), product.getName(), product.getvendor(), product.getDescription(), product.getQuantity(), product.getBuyPrice(), product.getMSRP(), product.getCode()});
+                                    {product.getProductLineID(), product.getName(), product.getVendor(), product.getDescription(), product.getQuantity(), product.getBuyPrice(), product.getMSRP(), product.getCode()});
                 }
                 catch(DataAccessException ex){
                     throw ex;
             }
+            try{ 
+                Product Product = FindProductByID(product.getCode());
+                }
+                catch(DataAccessException ex){
+                    throw ex;
+            }
+            return product;
     }
 }

@@ -31,16 +31,26 @@ public class Product {
         this.BuyPrice=BuyPrice;
         this.MSRP=MSRP;  
     }
+    
+    public Product(int ProductLineID, String Name, String vendor, String Description, int Quantity, double BuyPrice, double MSRP){
+        this.ProductLineID=ProductLineID;
+        this.Name=Name;
+        this.vendor=vendor;
+        this.Description=Description;
+        this.Quantity=Quantity;
+        this.BuyPrice=BuyPrice;
+        this.MSRP=MSRP;  
+    }    
 
     public Product(String Name, String vendor){
         this.Name=Name;
         this.vendor=vendor;  
     }
-    
+
     public Product() {
 
     }
-    
+
     /**
      * @return the Code
      */
@@ -82,18 +92,18 @@ public class Product {
     public void setName(String Name) {
         this.Name = Name;
     }
-    
+
     /**
      * @return the vendor
      */
-    public String getvendor() {
+    public String getVendor() {
         return vendor;
     }
 
     /**
-     * @param vendor the Vendor to set
+     * @param vendor the vendor to set
      */
-    public void setvendor(String vendor) {
+    public void setVendor(String vendor) {
         this.vendor = vendor;
     }
 
@@ -152,4 +162,5 @@ public class Product {
     public void setMSRP(double MSRP) {
         this.MSRP = MSRP;
     }
+    
 }

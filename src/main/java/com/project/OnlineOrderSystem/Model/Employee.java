@@ -35,6 +35,18 @@ public class Employee {
         this.CellPhoneNo=CellPhoneNo;    
     }
 
+    
+    public Employee(int OfficeCode, int ReportsTo, String FirstName, String LastName, String Email, String Title, String DeskPhoneNo, String CellPhoneNo){
+        this.OfficeCode=OfficeCode;
+        this.ReportsTo=ReportsTo;
+        this.FirstName=FirstName;
+        this.LastName=LastName;
+        this.Email=Email;
+        this.Title=Title;
+        this.DeskPhoneNo=DeskPhoneNo;
+        this.CellPhoneNo=CellPhoneNo;    
+    }
+    
     public Employee() {
     
     }

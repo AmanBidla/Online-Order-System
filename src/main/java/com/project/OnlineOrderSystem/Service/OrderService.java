@@ -216,13 +216,24 @@ public class OrderService implements OrderDao {
         String Status="Order Placed";
         Product Product =ProductDao.FindProductByID(ProductCode);
         double PriceEach = (Product.getMSRP()/Product.getQuantity());
-        double Amount = PriceEach*Quantity; 
+        double newMSRP = Product.getMSRP() - PriceEach;
+        double newBuyPrice = Product.getBuyPrice() - (Product.getBuyPrice()/Product.getQuantity());
+        double Amount = PriceEach*Quantity;
+
+        try{ 
+           jdbcTemplate.update("INSERT INTO Payment(ChequeNo, CustomerID, PaymentDate, Amount) "
+                              + "VALUES (?, ?, ?, ?)", 
+                                new Object[] 
+                                {ChequeNo, CustomerID, OrderDate, Amount});
+        }
+        catch(DataAccessException ex){
+                throw ex;
+        }     
         
         try{ 
-            jdbcTemplate.update("UPDATE Product SET Quantity=? WHERE Code=?"
-                                  + "VALUES (?, ?)", 
+            jdbcTemplate.update("UPDATE Product SET BuyPrice=?, MSRP=?, Quantity=? WHERE Code=?", 
                                     new Object[] 
-                                    {(Product.getQuantity()-Quantity), Product.getCode()});
+                                    {newBuyPrice, newMSRP, (Product.getQuantity()-Quantity), Product.getCode()});
             }
             catch(DataAccessException ex){
                 throw ex;
@@ -240,7 +251,7 @@ public class OrderService implements OrderDao {
         
         Order Order;
         try{
-            Order = jdbcTemplate.queryForObject("SELECT * FROM [Order] WHERE CustomerID=? AND OrderDate=? AND RequiredDate=?, Shipped=?, Status=?, Comments=?",(resultSet, rowNum) -> {
+            Order = jdbcTemplate.queryForObject("SELECT * FROM [Order] WHERE CustomerID=? AND OrderDate=? AND RequiredDate=? AND Shipped IS NULL AND Status=? AND Comments=?",(resultSet, rowNum) -> {
             Order order = new Order();
             order.setID(resultSet.getInt("ID"));
             order.setCustomerID(resultSet.getInt("CustomerID"));
@@ -251,7 +262,7 @@ public class OrderService implements OrderDao {
             order.setComments(resultSet.getString("Comments"));
             return order;
             },
-            CustomerID, OrderDate, RequiredDate, Shipped , Status, Comments);
+            CustomerID, OrderDate, RequiredDate, Status, Comments);
         }
         catch(DataAccessException ex){
             throw ex;

@@ -32,6 +32,15 @@ public class Order {
         this.Comments=Comments;    
     }
 
+    public Order(int CustomerID, Date OrderDate, Date RequiredDate,Date Shipped, String Status, String Comments){
+        this.CustomerID=CustomerID;
+        this.OrderDate=OrderDate;
+        this.RequiredDate=RequiredDate;
+        this.Shipped=Shipped;
+        this.Status=Status;
+        this.Comments=Comments;    
+    }    
+
     public Order(int CustomerID, Date OrderDate){
         this.CustomerID=CustomerID;
         this.OrderDate=OrderDate;
